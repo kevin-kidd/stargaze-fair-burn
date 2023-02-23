@@ -6,6 +6,7 @@ import gradient from "../../public/gradient.webp";
 import Image from "next/image";
 import { Hero } from "../components/Hero";
 import { useState } from "react";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const [isAnimationActive, setIsAnimationActive] = useState<boolean>(false);
@@ -42,12 +43,22 @@ const Home: NextPage = () => {
       </Head>
       <main className="min-h-screen bg-black">
         <Header />
-        <div className="container relative mx-auto flex w-full flex-col items-center justify-center pt-16">
+        <div className="container relative mx-auto flex w-full flex-col items-center justify-center overflow-y-hidden py-16">
           <Hero isAnimationActive={isAnimationActive} />
           <div className="circle absolute top-0 h-auto w-full md:-top-40 md:w-[80%]">
             <Image src={gradient} alt="" priority className="h-full w-full" />
           </div>
           <Stats setIsAnimationActive={setIsAnimationActive} />
+          <span className="relative z-10 text-white pt-10">
+            Made with 💜 by{" "}
+            <Link
+              href="https://kevin.stars.page/"
+              target="_blank"
+              className="gradient-text font-semibold"
+            >
+              kevin.stars
+            </Link>
+          </span>
         </div>
       </main>
     </>
