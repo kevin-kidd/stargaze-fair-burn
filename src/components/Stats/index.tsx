@@ -17,7 +17,7 @@ export const Stats = ({
   const { burnedCanvasRef, distributedCanvasRef } = useChart(data?.history);
   const updatedAtTime = useTimer(dataUpdatedAt);
   return (
-    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6 md:max-w-6xl 2xl:max-w-6xl">
+    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6">
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <ChartCard
           updatedAtTime={updatedAtTime}

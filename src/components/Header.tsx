@@ -24,15 +24,15 @@ const menuItems = [
 
 const socials = [
   {
-    icon: <FaTwitter className="h-5 w-5 fill-white" />,
+    icon: <FaTwitter className="h-5 w-5 fill-white 2xl:h-6 2xl:w-6" />,
     href: "https://twitter.com/stargazezone",
   },
   {
-    icon: <FaDiscord className="h-5 w-5 fill-white" />,
+    icon: <FaDiscord className="h-5 w-5 fill-white 2xl:h-6 2xl:w-6" />,
     href: "https://discord.gg/stargaze",
   },
   {
-    icon: <FaTelegram className="h-5 w-5 fill-white" />,
+    icon: <FaTelegram className="h-5 w-5 fill-white 2xl:h-6 2xl:w-6" />,
     href: "https://t.me/joinchat/ZQ95YmIn3AI0ODFh",
   },
 ];
@@ -48,7 +48,7 @@ export const Header = ({
   return (
     <div className="fixed top-0 z-30 w-full border border-b border-white/20 bg-black">
       <div className="container mx-auto flex w-full justify-between px-6 py-4 md:px-2">
-        <div className="flex text-white lg:gap-2">
+        <div className="flex text-white lg:gap-2 2xl:text-lg">
           <Image src={logo} alt="Stargaze" className="mr-4" />
           {menuItems.map((item) => (
             <Link
@@ -65,10 +65,10 @@ export const Header = ({
           <Link
             href="https://www.coingecko.com/en/coins/stargaze"
             target="_blank"
-            className="mr-2 flex items-center gap-1 rounded-md border border-white/20 bg-slate-800 py-2 px-3"
+            className="mr-2 flex items-center gap-1 rounded-md border border-white/20 bg-slate-800 py-2 px-3 text-xs md:text-sm 2xl:text-base"
           >
             <Image src={stargazeIcon} alt="$STARS" className="h-5 w-5" />
-            <span className="text-xs md:text-sm">
+            <span>
               {priceData?.price
                 ? `$${Math.round(priceData?.price * 1000) / 1000}`
                 : isLoading
@@ -77,7 +77,6 @@ export const Header = ({
             </span>
             <span
               className={classNames(
-                "text-xs",
                 priceData?.change &&
                   (priceData?.change > 0
                     ? "text-green-500"

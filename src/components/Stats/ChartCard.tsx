@@ -34,11 +34,11 @@ export const ChartCard: FunctionComponent<{
         />
       )}
       <div className="flex w-full justify-between px-5">
-        <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base lg:text-lg">
+        <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base md:text-lg xl:text-xl">
           {title}
         </span>
         <div className="flex items-center gap-2">
-          <div className="flex whitespace-nowrap text-xs text-gray-500 lg:text-sm">
+          <div className="flex whitespace-nowrap text-xs text-gray-500 md:text-sm xl:text-base">
             {!isLoading && updatedAtTime && (
               <div className="flex gap-1">
                 <span className="hidden lg:flex">Updated</span>
@@ -53,7 +53,7 @@ export const ChartCard: FunctionComponent<{
           <button onClick={refetch} disabled={isRefetching}>
             <TbRefresh
               className={classNames(
-                "h-5 w-5 text-white",
+                "h-5 w-5 text-white xl:h-6 xl:w-6",
                 isRefetching && "animate-spin"
               )}
             />

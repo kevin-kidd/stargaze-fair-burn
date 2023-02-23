@@ -74,8 +74,9 @@ const tooltipOptions: Partial<TooltipOptions> = {
     beforeLabel: () => "",
     afterLabel: () => "",
     labelColor: () => ({
-      borderColor: "#ffffff",
-      backgroundColor: "#ffffff",
+      borderWidth: 0,
+      borderColor: "#9c0580",
+      backgroundColor: "#9c0580",
     }),
     labelPointStyle: () => ({
       rotation: 0,
@@ -83,16 +84,13 @@ const tooltipOptions: Partial<TooltipOptions> = {
       radius: 3,
       borderWidth: 2,
       backgroundColor: "#9c0580",
-      borderColor: "#ffffff",
+      borderColor: "#9c0580",
     }),
     footer: () => "",
-    labelTextColor: () => "",
+    labelTextColor: () => "white",
     title: function (context) {
       if (context[0]) {
-        return `${format(
-          new Date(context[0].parsed.x),
-          "MMM d, yyyy"
-        )} - ${format(new Date(context[0].parsed.x), "h:mm a")}`;
+        return format(new Date(context[0].parsed.x), "MMM d, yyyy");
       }
       return;
     },

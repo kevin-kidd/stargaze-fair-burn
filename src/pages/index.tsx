@@ -23,19 +23,14 @@ const Home: NextPage = () => {
     }
     return title;
   }, [totalBurned, priceData?.price]);
-  const description = useMemo(() => {
-    let description =
-      "Find all relevant statistics for the Stargaze Fair Burn mechanism.";
-    if (totalBurned) {
-      description = `${description} Over ${totalBurned} $STARS have been burned so far.`;
-    }
-    return description;
-  }, [totalBurned]);
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta name="description" content={description} />
+        <meta
+          name="description"
+          content="Find all relevant statistics for the Stargaze Fair Burn mechanism."
+        />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
