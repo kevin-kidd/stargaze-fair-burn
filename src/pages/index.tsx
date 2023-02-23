@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Stats } from "../components/Stats";
 import { Header } from "../components/Header";
-import gradient from "../../public/assets/gradient.webp";
+import gradient from "../../public/assets/gradient.png";
 import Image from "next/image";
 import { Hero } from "../components/Hero";
 import { useState } from "react";
@@ -51,6 +51,7 @@ const Home: NextPage = () => {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#2d89ef" />
         <meta name="theme-color" content="#000000" />
+        <meta property="og:image" content="/assets/og_image.png" />
       </Head>
       <main className="min-h-screen bg-black">
         <Header priceData={priceData} isLoading={isLoading} />

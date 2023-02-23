@@ -6,8 +6,6 @@ import { z } from "zod";
  */
 const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
-  METABASE_USERNAME: z.string(),
-  METABASE_PASSWORD: z.string(),
 });
 
 /**
@@ -26,8 +24,6 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
-  METABASE_PASSWORD: process.env.METABASE_PASSWORD,
-  METABASE_USERNAME: process.env.METABASE_USERNAME,
   NEXT_PUBLIC_METABASE_URL: process.env.NEXT_PUBLIC_METABASE_URL,
 };
 
