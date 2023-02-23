@@ -5,8 +5,8 @@ import { enUS } from "date-fns/locale";
 import { format, subDays } from "date-fns";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef, useState } from "react";
-import type { MinMaxValues } from "../utils/chart_helper";
-import { getMinMaxValues } from "../utils/chart_helper";
+import type { MinMaxValues } from "../utils/chart.helper";
+import { getMinMaxValues } from "../utils/chart.helper";
 import type {
   DistributedToStakersRow,
   HistoricalData,

@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Stats } from "../components/Stats";
 import { Header } from "../components/Header";
-import gradient from "../../public/assets/gradient.png";
+import gradient from "../../public/assets/gradient.webp";
 import Image from "next/image";
 import { Hero } from "../components/Hero";
 import { useMemo, useState } from "react";
@@ -23,17 +23,19 @@ const Home: NextPage = () => {
     }
     return title;
   }, [totalBurned, priceData?.price]);
+  const description = useMemo(() => {
+    let description =
+      "Find all relevant statistics for the Stargaze Fair Burn mechanism.";
+    if (totalBurned) {
+      description = `${description} Over ${totalBurned} $STARS have been burned so far.`;
+    }
+    return description;
+  }, [totalBurned]);
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta
-          name="description"
-          content={`Find all relevant statistics for the Stargaze Fair Burn mechanism. ${
-            totalBurned.length > 0 &&
-            `Over ${totalBurned} $STARS have been burned so far.`
-          }`}
-        />
+        <meta name="description" content={description} />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
