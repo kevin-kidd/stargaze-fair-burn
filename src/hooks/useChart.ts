@@ -54,7 +54,7 @@ const handleLegendClick = (
   }
 };
 
-const tooltipOptions: TooltipOptions = {
+const tooltipOptions: Partial<TooltipOptions> = {
   backgroundColor: "#fffff80",
   titleColor: "#ffffff",
   bodyColor: "#ffffff",
@@ -65,6 +65,28 @@ const tooltipOptions: TooltipOptions = {
   borderWidth: 1,
   padding: 8,
   callbacks: {
+    beforeTitle: () => "",
+    beforeFooter: () => "",
+    afterTitle: () => "",
+    afterFooter: () => "",
+    beforeBody: () => "",
+    afterBody: () => "",
+    beforeLabel: () => "",
+    afterLabel: () => "",
+    labelColor: () => ({
+      borderColor: "#ffffff",
+      backgroundColor: "#ffffff",
+    }),
+    labelPointStyle: () => ({
+      rotation: 0,
+      pointStyle: "circle",
+      radius: 3,
+      borderWidth: 2,
+      backgroundColor: "#9c0580",
+      borderColor: "#ffffff",
+    }),
+    footer: () => "",
+    labelTextColor: () => "",
     title: function (context) {
       if (context[0]) {
         return `${format(

@@ -63,7 +63,7 @@ export const StatCard: FunctionComponent<{
             "0"
           ) : (
             <AnimatedNumber
-              className={stat.title.includes("Total") && "gradient-text"}
+              className={stat.title.includes("Total") ? "gradient-text" : ""}
               value={stat.value}
               duration={600}
               formatValue={(value: number) =>

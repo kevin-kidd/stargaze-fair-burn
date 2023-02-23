@@ -48,10 +48,11 @@ export const useStats = (
         }, 4000);
         setPreviousStats(data.stats);
       }
-      if (data.stats.burned[0]?.value !== undefined) {
-        setTotalBurned(
-          Math.round(data.stats.burned[0]?.value).toLocaleString()
-        );
+      if (data.stats.burned[0]?.value) {
+        const totalBurned = Math.round(
+          data.stats.burned[0]?.value
+        ).toLocaleString();
+        if (totalBurned) setTotalBurned(totalBurned);
       }
     }
   }, [data]);

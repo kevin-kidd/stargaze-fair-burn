@@ -5,7 +5,7 @@ import { Header } from "../components/Header";
 import gradient from "../../public/assets/gradient.png";
 import Image from "next/image";
 import { Hero } from "../components/Hero";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePrice } from "../hooks/usePrice";
 
@@ -13,15 +13,20 @@ const Home: NextPage = () => {
   const [isAnimationActive, setIsAnimationActive] = useState<boolean>(false);
   const [totalBurned, setTotalBurned] = useState<string>("");
   const { data: priceData, isLoading } = usePrice();
+  const title = useMemo(() => {
+    let title = "Stargaze Fair Burn";
+    if (priceData?.price !== undefined) {
+      title = `$${Math.round(priceData?.price * 1000) / 1000} | ${title}`;
+    }
+    if (totalBurned) {
+      title = `${totalBurned} | ${title}`;
+    }
+    return title;
+  }, [totalBurned, priceData?.price]);
   return (
     <>
       <Head>
-        <title>
-          {totalBurned.length > 0 && totalBurned + " | "}
-          {priceData?.price !== undefined &&
-            `$${Math.round(priceData?.price * 1000) / 1000} | `}
-          Stargaze Fair Burn
-        </title>
+        <title>{title}</title>
         <meta
           name="description"
           content={`Find all relevant statistics for the Stargaze Fair Burn mechanism. ${

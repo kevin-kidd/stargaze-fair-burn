@@ -14,7 +14,9 @@ const server = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  NEXT_PUBLIC_METABASE_URL: z.string(),
+  NEXT_PUBLIC_METABASE_URL_DISTRIBUTION: z.string(),
+  NEXT_PUBLIC_METABASE_URL_BURN: z.string(),
+  NEXT_PUBLIC_COIN_GECKO_URL: z.string(),
 });
 
 /**
@@ -24,7 +26,10 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
-  NEXT_PUBLIC_METABASE_URL: process.env.NEXT_PUBLIC_METABASE_URL,
+  NEXT_PUBLIC_METABASE_URL_DISTRIBUTION:
+    process.env.NEXT_PUBLIC_METABASE_URL_DISTRIBUTION,
+  NEXT_PUBLIC_METABASE_URL_BURN: process.env.NEXT_PUBLIC_METABASE_URL_BURN,
+  NEXT_PUBLIC_COIN_GECKO_URL: process.env.NEXT_PUBLIC_COIN_GECKO_URL,
 };
 
 // Don't touch the part below

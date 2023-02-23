@@ -11,15 +11,9 @@ dayjs.extend(advancedFormat);
 
 const getFairBurnHistory = async () => {
   const distributedToStakers: DistributedToStakersRow[] = await ky
-    .get(
-      env.NEXT_PUBLIC_METABASE_URL +
-        "/api/public/card/dfedf8e8-fd13-4cfb-9d87-e6a13ab45a7f/query/json"
-    )
+    .get(env.NEXT_PUBLIC_METABASE_URL_DISTRIBUTION)
     .json();
-  const burnResponse = await ky.get(
-    env.NEXT_PUBLIC_METABASE_URL +
-      "/api/public/card/3f4acb97-796f-40ae-af2c-d3163d09667a/query/json"
-  );
+  const burnResponse = await ky.get(env.NEXT_PUBLIC_METABASE_URL_BURN);
   const starsBurned: StarsBurnedRow[] = await burnResponse.json();
   return {
     starsBurned,
