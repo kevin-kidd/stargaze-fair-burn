@@ -1,17 +1,22 @@
+import type { Dispatch, SetStateAction } from "react";
 import { useChart } from "../../hooks/useChart";
 import { emptyStats, useStats } from "../../hooks/useStats";
 import { useTimer } from "../../hooks/useTimer";
 import { ChartCard } from "./ChartCard";
 import { StatCard } from "./StatCard";
 
-export const Stats = () => {
+export const Stats = ({
+  setIsAnimationActive,
+}: {
+  setIsAnimationActive: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { data, isLoading, isError, refetch, isRefetching, dataUpdatedAt } =
-    useStats();
+    useStats(setIsAnimationActive);
   const { burnedCanvasRef, distributedCanvasRef } = useChart(data?.history);
   const updatedAtTime = useTimer(dataUpdatedAt);
   return (
-    <section className="container relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 pb-20">
-      <div className="grid w-full grid-cols-2 gap-6">
+    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6 pb-20 md:max-w-5xl 2xl:max-w-6xl">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <ChartCard
           updatedAtTime={updatedAtTime}
           isRefetching={isRefetching}
@@ -21,34 +26,34 @@ export const Stats = () => {
           isLoading={isLoading}
           isError={isError}
         />
-        <div className="grid grid-rows-2 gap-6">
+        <div className="grid gap-6 md:grid-rows-2">
           <StatCard
+            minimumDate={data?.stats.burned[0]?.minimumDate}
             updatedAtTime={updatedAtTime}
             stat={data?.stats.burned[0] ?? emptyStats.burned[0]}
             isLoading={isLoading}
-            isError={isError}
           />
           <StatCard
             updatedAtTime={updatedAtTime}
+            minimumDate={data?.stats.burned[1]?.minimumDate}
             stat={data?.stats.burned[1] ?? emptyStats.burned[1]}
             isLoading={isLoading}
-            isError={isError}
           />
         </div>
       </div>
-      <div className="grid w-full grid-cols-2 gap-6">
-        <div className="grid grid-rows-2 gap-6">
+      <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-rows-2">
           <StatCard
             updatedAtTime={updatedAtTime}
+            minimumDate={data?.stats.distributed[0]?.minimumDate}
             stat={data?.stats.distributed[0] ?? emptyStats.distributed[0]}
             isLoading={isLoading}
-            isError={isError}
           />
           <StatCard
             updatedAtTime={updatedAtTime}
+            minimumDate={data?.stats.distributed[1]?.minimumDate}
             stat={data?.stats.distributed[1] ?? emptyStats.distributed[1]}
             isLoading={isLoading}
-            isError={isError}
           />
         </div>
         <ChartCard

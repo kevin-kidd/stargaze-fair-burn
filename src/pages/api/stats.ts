@@ -5,6 +5,9 @@ import type {
   DistributedToStakersRow,
   StarsBurnedRow,
 } from "../../hooks/useStats.js";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+dayjs.extend(advancedFormat);
 
 const getFairBurnHistory = async () => {
   const distributedToStakers: DistributedToStakersRow[] = await ky
@@ -42,6 +45,7 @@ const chart = async (req: NextApiRequest, res: NextApiResponse) => {
     {
       id: "total-burned",
       title: "Total Burned",
+      minimumDate: dayjs(starsBurned[0]?.burn_date).format("DD/MM/YYYY"),
       value: Math.round(
         starsBurned[starsBurned.length - 1]?.cumulative_burn ?? 0
       ),
@@ -55,6 +59,7 @@ const chart = async (req: NextApiRequest, res: NextApiResponse) => {
     },
     {
       id: "burned-daily-average",
+      minimumDate: dayjs(starsBurned[0]?.burn_date).format("DD/MM/YYYY"),
       title: "Daily Average Burned",
       value: Math.round(burnedYesterday.cumulative / starsBurned.length - 1),
     },
@@ -87,6 +92,9 @@ const chart = async (req: NextApiRequest, res: NextApiResponse) => {
       id: "total-distributed",
       title: "Total Distributed",
       value: Math.round(distributedToday.cumulative),
+      minimumDate: dayjs(distributedToStakers[0]?.dist_date).format(
+        "DD/MM/YYYY"
+      ),
       changeRate:
         Math.round(
           ((distributedToday.cumulative - distributedYesterday.cumulative) /
@@ -98,6 +106,9 @@ const chart = async (req: NextApiRequest, res: NextApiResponse) => {
     {
       id: "distributed-daily-average",
       title: "Daily Average Distributed",
+      minimumDate: dayjs(distributedToStakers[0]?.dist_date).format(
+        "DD/MM/YYYY"
+      ),
       value: Math.round(
         distributedToday.cumulative / distributedToStakers.length
       ),

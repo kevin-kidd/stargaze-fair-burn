@@ -15,11 +15,11 @@ export const useTimer = (dataUpdatedAt: number) => {
     ? `${days} days`
     : hours > 0
     ? `${hours} hours`
-    : minutes > 3
+    : minutes === 1
+    ? "1 minute"
+    : minutes > 1
     ? `${minutes} minutes`
-    : minutes > 0
-    ? "a few minutes"
-    : seconds > 3
+    : seconds > 1
     ? `${seconds} seconds`
-    : "a few seconds";
+    : "1 second";
 };

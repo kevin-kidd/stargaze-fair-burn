@@ -1,4 +1,5 @@
 import ky from "ky";
+import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
@@ -16,11 +17,20 @@ const getStats = async () => {
   return data;
 };
 
-export const useStats = () => {
+export const useStats = (
+  setIsAnimationActive: Dispatch<SetStateAction<boolean>>
+) => {
   const [history, setHistory] = useState<HistoricalData>();
+  const [previousData, setPreviousData] = useState<{
+    history: HistoricalData;
+    stats: {
+      distributed: Stat[];
+      burned: Stat[];
+    };
+  }>();
   const { data, isLoading, isError, refetch, isRefetching, dataUpdatedAt } =
     useQuery("stats", getStats, {
-      refetchInterval: 6000 * 1000,
+      refetchInterval: 30 * 1000,
     });
   useEffect(() => {
     if (
@@ -29,6 +39,17 @@ export const useStats = () => {
       JSON.stringify(data.history) !== JSON.stringify(history)
     ) {
       setHistory(data.history);
+    }
+    if (data) {
+      if (!previousData) {
+        setPreviousData(data);
+      } else if (JSON.stringify(previousData) !== JSON.stringify(data)) {
+        setIsAnimationActive(true);
+        setTimeout(() => {
+          setIsAnimationActive(false);
+        }, 4000);
+        setPreviousData(data);
+      }
     }
   }, [data]);
   return {
@@ -51,6 +72,7 @@ export type Stat = {
   value: number;
   id: string;
   title: string;
+  minimumDate?: string;
   changeRate?: number;
 };
 
@@ -74,8 +96,8 @@ export const emptyStats = {
       value: 0,
     },
     {
-      id: "loading-daily-average",
-      title: "Daily Average",
+      id: "loading-daily-average-burn",
+      title: "Daily Average Burned",
       value: 0,
     },
     {
@@ -91,8 +113,8 @@ export const emptyStats = {
       value: 0,
     },
     {
-      id: "loading-daily-average",
-      title: "Daily Average",
+      id: "loading-daily-average-distributed",
+      title: "Daily Average Distributed",
       value: 0,
     },
     {

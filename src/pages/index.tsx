@@ -5,8 +5,10 @@ import { Header } from "../components/Header";
 import gradient from "../../public/gradient.webp";
 import Image from "next/image";
 import { Hero } from "../components/Hero";
+import { useState } from "react";
 
 const Home: NextPage = () => {
+  const [isAnimationActive, setIsAnimationActive] = useState<boolean>(false);
   return (
     <>
       <Head>
@@ -40,12 +42,12 @@ const Home: NextPage = () => {
       </Head>
       <main className="min-h-screen bg-black">
         <Header />
-        <div className="container relative mx-auto flex w-full flex-col items-center justify-center">
-          <Hero />
-          <div className="circle absolute -top-20 h-full w-[80%]">
+        <div className="container relative mx-auto flex w-full flex-col items-center justify-center pt-16">
+          <Hero isAnimationActive={isAnimationActive} />
+          <div className="circle absolute top-0 h-auto w-full md:-top-40 md:w-[80%]">
             <Image src={gradient} alt="" priority className="h-full w-full" />
           </div>
-          <Stats />
+          <Stats setIsAnimationActive={setIsAnimationActive} />
         </div>
       </main>
     </>

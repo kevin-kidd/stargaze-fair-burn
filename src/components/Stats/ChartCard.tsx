@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import type { FunctionComponent } from "react";
+import { BiTimeFive } from "react-icons/bi";
 import { TbRefresh } from "react-icons/tb";
 import { Dna } from "react-loader-spinner";
 
@@ -21,7 +22,7 @@ export const ChartCard: FunctionComponent<{
   updatedAtTime,
 }) => {
   return (
-    <div className="relative w-full rounded-md border border-white/10 bg-slate-900 pt-5">
+    <div className="relative w-full rounded-md border border-white/10 bg-slate-900 pt-3 lg:pt-5">
       {isLoading && (
         <Dna
           visible={true}
@@ -33,19 +34,22 @@ export const ChartCard: FunctionComponent<{
         />
       )}
       <div className="flex w-full justify-between px-5">
-        <span className="text-gray-400">{title}</span>
+        <span className="whitespace-nowrap text-sm text-gray-400 lg:text-base">
+          {title}
+        </span>
         <div className="flex gap-2">
-          <p className="text-sm text-gray-500">
+          <div className="flex whitespace-nowrap text-xs text-gray-500 lg:text-sm">
             {!isLoading && updatedAtTime && (
-              <>
-                Updated{" "}
+              <div className="flex gap-1">
+                <span className="hidden lg:flex">Updated</span>
+                <BiTimeFive className="h-4 w-4 lg:hidden" />
                 <span className="font-semibold text-gray-400">
                   {updatedAtTime}
                 </span>{" "}
                 ago
-              </>
+              </div>
             )}
-          </p>
+          </div>
           <button onClick={refetch} disabled={isRefetching}>
             <TbRefresh
               className={classNames(
