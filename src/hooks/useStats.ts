@@ -45,7 +45,7 @@ export const useStats = (
         setIsAnimationActive(true);
         setTimeout(() => {
           setIsAnimationActive(false);
-        }, 4000);
+        }, 3000);
         setPreviousStats(data.stats);
       }
       if (data.stats.burned[0]?.value) {
