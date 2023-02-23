@@ -15,9 +15,9 @@ export const StatCard: FunctionComponent<{
   if (!stat) return <></>; // TODO: Add a placeholder
   return (
     <div className="relative flex w-full justify-between gap-3 rounded-md border border-white/10 bg-slate-900 p-3 lg:p-6">
-      <div className="flex flex-col gap-2 md:gap-4 2xl:gap-7">
+      <div className="flex flex-col gap-2 sm:gap-2 lg:gap-5 2xl:gap-7">
         <div className="flex gap-2">
-          <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base md:text-lg xl:text-xl">
+          <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base xl:text-lg">
             {stat.title}
           </span>
           <p
@@ -28,7 +28,7 @@ export const StatCard: FunctionComponent<{
                   : stat.changeRate === 0
                   ? "text-gray-300"
                   : "text-red-600"),
-              "flex items-center text-xs font-semibold sm:text-sm md:text-base xl:text-lg"
+              "flex items-center text-xs font-semibold sm:text-sm lg:text-base"
             )}
           >
             {stat.changeRate !== undefined &&
@@ -58,7 +58,7 @@ export const StatCard: FunctionComponent<{
           </p>
         </div>
 
-        <div className="flex items-center gap-1 text-lg text-white sm:gap-2 md:text-3xl xl:text-4xl">
+        <div className="flex items-center gap-1 text-lg text-white sm:gap-2 sm:text-xl lg:text-3xl">
           {stat.value === 0 ? (
             "0"
           ) : (
@@ -74,10 +74,10 @@ export const StatCard: FunctionComponent<{
           <span className="text-gray-500">STARS</span>
         </div>
       </div>
-      <div className="flex h-full flex-col items-end justify-between whitespace-nowrap text-xs text-gray-500 md:text-sm xl:text-base">
+      <div className="flex h-full flex-col items-end justify-between whitespace-nowrap text-xs text-gray-500 sm:text-sm xl:text-base">
         <span>
           {!isLoading && updatedAtTime && (
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1">
               <span className="hidden lg:flex">Updated</span>
               <BiTimeFive className="h-4 w-4 lg:hidden" />
               <span className="font-semibold text-gray-400">

@@ -22,7 +22,7 @@ export const ChartCard: FunctionComponent<{
   updatedAtTime,
 }) => {
   return (
-    <div className="relative w-full rounded-md border border-white/10 bg-slate-900 pt-3 lg:pt-5">
+    <div className="relative order-1 w-full rounded-md border border-white/10 bg-slate-900 pt-3 lg:pt-5">
       {isLoading && (
         <Dna
           visible={true}
@@ -34,13 +34,13 @@ export const ChartCard: FunctionComponent<{
         />
       )}
       <div className="flex w-full justify-between px-5">
-        <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base md:text-lg xl:text-xl">
+        <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base xl:text-lg">
           {title}
         </span>
         <div className="flex items-center gap-2">
-          <div className="flex whitespace-nowrap text-xs text-gray-500 md:text-sm xl:text-base">
+          <div className="flex whitespace-nowrap text-xs text-gray-500 sm:text-sm xl:text-base">
             {!isLoading && updatedAtTime && (
-              <div className="flex gap-1">
+              <div className="flex items-center gap-1">
                 <span className="hidden lg:flex">Updated</span>
                 <BiTimeFive className="h-4 w-4 lg:hidden" />
                 <span className="font-semibold text-gray-400">

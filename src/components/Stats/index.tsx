@@ -17,7 +17,7 @@ export const Stats = ({
   const { burnedCanvasRef, distributedCanvasRef } = useChart(data?.history);
   const updatedAtTime = useTimer(dataUpdatedAt);
   return (
-    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6">
+    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6 md:px-10 xl:px-16">
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <ChartCard
           updatedAtTime={updatedAtTime}
@@ -28,7 +28,7 @@ export const Stats = ({
           isLoading={isLoading}
           isError={isError}
         />
-        <div className="grid gap-6 md:grid-rows-2">
+        <div className="order-1 grid gap-6 md:grid-rows-2">
           <StatCard
             minimumDate={data?.stats.burned[0]?.minimumDate}
             updatedAtTime={updatedAtTime}
@@ -44,7 +44,7 @@ export const Stats = ({
         </div>
       </div>
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="grid gap-6 md:grid-rows-2">
+        <div className="order-2 grid gap-6 md:order-1 md:grid-rows-2">
           <StatCard
             updatedAtTime={updatedAtTime}
             minimumDate={data?.stats.distributed[0]?.minimumDate}

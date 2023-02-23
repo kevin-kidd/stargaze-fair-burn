@@ -66,7 +66,7 @@ const Home: NextPage = () => {
             setIsAnimationActive={setIsAnimationActive}
             setTotalBurned={setTotalBurned}
           />
-          <span className="relative z-10 py-10 text-white">
+          <span className="relative z-10 py-10 text-white 2xl:text-xl">
             Made with 💜 by{" "}
             <Link
               href="https://kevin.stars.page/"
