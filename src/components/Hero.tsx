@@ -1,6 +1,6 @@
 import Image from "next/image";
-import stargazeIconWhite from "../../public/icon_white.svg";
-import animatedFireRing from "../../public/animated-fire-ring.webp";
+import stargazeIconWhite from "../../public/assets/icon_white.svg";
+import animatedFireRing from "../../public/assets/animated-fire-ring.webp";
 import classNames from "classnames";
 
 export const Hero = ({ isAnimationActive }: { isAnimationActive: boolean }) => {
@@ -21,8 +21,7 @@ export const Hero = ({ isAnimationActive }: { isAnimationActive: boolean }) => {
           )}
         />
       </div>
-
-      <h1 className="gradient-text absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform whitespace-nowrap text-5xl font-semibold md:text-7xl">
+      <h1 className="tracking-in-contract gradient-text absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform whitespace-nowrap text-5xl font-semibold md:text-7xl">
         Fair Burn
       </h1>
     </section>

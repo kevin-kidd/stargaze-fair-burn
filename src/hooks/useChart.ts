@@ -1,9 +1,10 @@
 import "chartjs-adapter-date-fns";
-import type { LegendItem } from "chart.js";
+import type { LegendItem, TooltipOptions } from "chart.js";
 import { Chart, registerables } from "chart.js";
 import { enUS } from "date-fns/locale";
 import { format, subDays } from "date-fns";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MinMaxValues } from "../utils/chart_helper";
 import { getMinMaxValues } from "../utils/chart_helper";
 import type {
@@ -12,8 +13,11 @@ import type {
   StarsBurnedRow,
 } from "./useStats";
 import type { ChartEvent } from "chart.js/dist/plugins/plugin.legend";
-
+import type { ChartType, ChartOptions } from "chart.js";
+import type { Point } from "chart.js";
 Chart.register(...registerables);
+
+const lineChartType: ChartType = "line";
 
 const handleLegendClick = (
   chart: Chart,
@@ -50,7 +54,7 @@ const handleLegendClick = (
   }
 };
 
-const tooltipOptions = {
+const tooltipOptions: TooltipOptions = {
   backgroundColor: "#fffff80",
   titleColor: "#ffffff",
   bodyColor: "#ffffff",
@@ -61,13 +65,16 @@ const tooltipOptions = {
   borderWidth: 1,
   padding: 8,
   callbacks: {
-    title: function (context: any) {
-      return `${format(
-        new Date(context[0].parsed.x),
-        "MMM d, yyyy"
-      )} - ${format(new Date(context[0].parsed.x), "h:mm a")}`;
+    title: function (context) {
+      if (context[0]) {
+        return `${format(
+          new Date(context[0].parsed.x),
+          "MMM d, yyyy"
+        )} - ${format(new Date(context[0].parsed.x), "h:mm a")}`;
+      }
+      return;
     },
-    label: function (context: any) {
+    label: function (context) {
       return Math.round(context.parsed.y).toLocaleString() + " $STARS";
     },
   },
@@ -88,26 +95,29 @@ export const useChart = (history: HistoricalData | undefined) => {
   }, []);
   useEffect(() => {
     if (!history?.starsBurned || !history?.distributedToStakers) return;
-    const burnData = {
+    const burnData: {
+      cumulative: Point[];
+      daily: Point[];
+    } = {
       cumulative: history.starsBurned.map((row: StarsBurnedRow) => ({
-        x: row.burn_date,
+        x: new Date(row.burn_date).getTime(),
         y: row.cumulative_burn,
       })),
       daily: history.starsBurned.map((row: StarsBurnedRow) => ({
-        x: row.burn_date,
+        x: new Date(row.burn_date).getTime(),
         y: row.daily_burn,
       })),
     };
     const distributionData = {
       cumulative: history.distributedToStakers.map(
         (row: DistributedToStakersRow) => ({
-          x: row.dist_date,
+          x: new Date(row.dist_date).getTime(),
           y: row.cumulative_dist,
         })
       ),
       daily: history.distributedToStakers.map(
         (row: DistributedToStakersRow) => ({
-          x: row.dist_date,
+          x: new Date(row.dist_date).getTime(),
           y: row.stakers_dist_amount,
         })
       ),
@@ -136,8 +146,108 @@ export const useChart = (history: HistoricalData | undefined) => {
       distributionDatasetIndex === 0
         ? values.distributionValues.cumulative
         : values.distributionValues.daily;
+    const burnOptions: ChartOptions = {
+      animation: false,
+      responsive: true,
+      interaction: {
+        intersect: false,
+        mode: "nearest" as const,
+        includeInvisible: true,
+      },
+      scales: {
+        y: {
+          title: {
+            display: true,
+            color: "#ffffff",
+            text: "STARS",
+            padding: 2,
+          },
+          grid: {
+            display: true,
+            color: "#ffffff20",
+            drawTicks: false,
+          },
+          max: burnMinMaxValues.maxValue * 1.05,
+          ticks: {
+            color: "#ffffff",
+            padding: 8,
+            autoSkipPadding: 20,
+            callback: (value) => {
+              if (value === 0) return;
+              return typeof value === "number"
+                ? Math.round(value).toLocaleString()
+                : Math.round(parseFloat(value)).toLocaleString();
+            },
+          },
+        },
+        x: {
+          adapters: {
+            date: {
+              locale: enUS,
+            },
+          },
+          grid: {
+            display: false,
+            drawTicks: false,
+          },
+          type: "time",
+          min: subDays(burnMinMaxValues.maxDate, 30).getTime(),
+          max: burnMinMaxValues.maxDate,
+          ticks: {
+            padding: 8,
+            maxTicksLimit: 7,
+            maxRotation: 0,
+            minRotation: 0,
+            color: "#ffffff",
+            autoSkipPadding: 20,
+            source: "auto",
+            autoSkip: false,
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          onClick: (event: ChartEvent, legendItem: LegendItem) => {
+            handleLegendClick(
+              burnChart,
+              legendItem,
+              values.burnValues,
+              setBurnDatasetIndex
+            );
+          },
+        },
+        tooltip: tooltipOptions,
+        zoom: {
+          limits: {
+            x: {
+              minRange: 6 * 24 * 60 * 60 * 1000,
+              min: burnMinMaxValues.minDate,
+              max: burnMinMaxValues.maxDate,
+            },
+            y: {
+              min: 0,
+              max: burnMinMaxValues.maxValue,
+            },
+          },
+          pan: {
+            mode: "x",
+            enabled: true,
+          },
+          zoom: {
+            mode: "x",
+            wheel: {
+              enabled: true,
+              speed: 0.25,
+            },
+            pinch: {
+              enabled: true,
+            },
+          },
+        },
+      },
+    };
     const burnConfig = {
-      type: "line",
+      type: lineChartType,
       data: {
         datasets: [
           {
@@ -154,102 +264,44 @@ export const useChart = (history: HistoricalData | undefined) => {
           },
         ],
       },
-      options: {
-        animation: false,
-        responsive: true,
-        interaction: {
-          intersect: false,
-          mode: "nearest",
-          includeInvisible: true,
+      options: burnOptions,
+    };
+    const distributionOptions: ChartOptions = {
+      ...burnConfig.options,
+      scales: {
+        x: {
+          ...burnConfig.options.scales?.x,
+          min: subDays(distributionMinMaxValues.maxDate, 30).getTime(),
+          max: distributionMinMaxValues.maxDate,
         },
-        adapters: {
-          date: {
-            locale: enUS,
-          },
+        y: {
+          ...burnConfig.options.scales?.y,
+          max: distributionMinMaxValues.maxValue * 1.05,
         },
-        scales: {
-          y: {
-            title: {
-              display: true,
-              color: "#ffffff",
-              text: "STARS",
-              padding: 2,
-            },
-            grid: {
-              display: true,
-              color: "#ffffff20",
-              drawTicks: false,
-            },
-            max: burnMinMaxValues.maxValue * 1.05,
-            ticks: {
-              color: "#ffffff",
-              padding: 8,
-              autoSkipPadding: 20,
-              callback: (value: number) => {
-                if (value === 0) return;
-                return Math.round(value).toLocaleString();
-              },
-            },
-          },
-          x: {
-            grid: {
-              display: false,
-              drawTicks: false,
-            },
-            type: "time",
-            min: subDays(burnMinMaxValues.maxDate, 30).getTime(),
-            max: burnMinMaxValues.maxDate,
-            ticks: {
-              padding: 8,
-              maxTicksLimit: 7,
-              maxRotation: 0,
-              minRotation: 0,
-              color: "#ffffff",
-              autoSkipPadding: 20,
-              source: "auto",
-              autoSkip: false,
-            },
+      },
+      plugins: {
+        ...burnConfig.options.plugins,
+        legend: {
+          onClick: (event: ChartEvent, legendItem: LegendItem) => {
+            handleLegendClick(
+              distributionChart,
+              legendItem,
+              values.distributionValues,
+              setDistributionDatasetIndex
+            );
           },
         },
-        plugins: {
-          legend: {
-            onClick: (event: ChartEvent, legendItem: LegendItem) => {
-              handleLegendClick(
-                burnChart,
-                legendItem,
-                values.burnValues,
-                setBurnDatasetIndex
-              );
+        zoom: {
+          ...burnConfig.options.plugins?.zoom,
+          limits: {
+            x: {
+              minRange: 6 * 24 * 60 * 60 * 1000,
+              min: distributionMinMaxValues.minDate,
+              max: distributionMinMaxValues.maxDate,
             },
-          },
-          tooltip: tooltipOptions,
-          zoom: {
-            limits: {
-              x: {
-                minRange: 6 * 24 * 60 * 60 * 1000,
-                min: burnMinMaxValues.minDate,
-                max: burnMinMaxValues.maxDate,
-              },
-              y: {
-                min: 0,
-                max: burnMinMaxValues.maxValue,
-              },
-            },
-            pan: {
-              mode: "x",
-              drag: true,
-              enabled: true,
-            },
-            zoom: {
-              mode: "x",
-              wheel: {
-                enabled: true,
-                sensitivity: 0.25,
-              },
-              pinch: {
-                enabled: true,
-                sensitivity: 0.25,
-              },
+            y: {
+              min: 0,
+              max: distributionMinMaxValues.maxValue,
             },
           },
         },
@@ -275,47 +327,7 @@ export const useChart = (history: HistoricalData | undefined) => {
           },
         ],
       },
-      options: {
-        ...burnConfig.options,
-        scales: {
-          x: {
-            ...burnConfig.options.scales.x,
-            min: subDays(distributionMinMaxValues.maxDate, 30).getTime(),
-            max: distributionMinMaxValues.maxDate,
-          },
-          y: {
-            ...burnConfig.options.scales.y,
-            max: distributionMinMaxValues.maxValue * 1.05,
-          },
-        },
-        plugins: {
-          ...burnConfig.options.plugins,
-          legend: {
-            onClick: (event: ChartEvent, legendItem: LegendItem) => {
-              handleLegendClick(
-                distributionChart,
-                legendItem,
-                values.distributionValues,
-                setDistributionDatasetIndex
-              );
-            },
-          },
-          zoom: {
-            ...burnConfig.options.plugins.zoom,
-            limits: {
-              x: {
-                minRange: 6 * 24 * 60 * 60 * 1000,
-                min: distributionMinMaxValues.minDate,
-                max: distributionMinMaxValues.maxDate,
-              },
-              y: {
-                min: 0,
-                max: distributionMinMaxValues.maxValue,
-              },
-            },
-          },
-        },
-      },
+      options: distributionOptions,
     };
     const burnChart = new Chart(burnCtx, burnConfig);
     const distributionChart = new Chart(distributionCtx, distributionConfig);

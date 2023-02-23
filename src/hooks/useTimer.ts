@@ -19,7 +19,7 @@ export const useTimer = (dataUpdatedAt: number) => {
     ? "1 minute"
     : minutes > 1
     ? `${minutes} minutes`
-    : seconds > 1
-    ? `${seconds} seconds`
-    : "1 second";
+    : seconds <= 1
+    ? "1 second"
+    : `${seconds} seconds`;
 };

@@ -1,27 +1,25 @@
-const getMinDate = (data: ChartRow[]) => {
-  return new Date(
-    Math.min(...data.map(({ x }: { x: string }) => Date.parse(x)))
-  ).getTime();
+import type { Point } from "chart.js";
+
+const getMinDate = (data: Point[]) => {
+  return Math.min(...data.map(({ x }: { x: number }) => x));
 };
 
-const getMaxDate = (data: ChartRow[]) => {
-  return new Date(
-    Math.max(...data.map(({ x }: { x: string }) => Date.parse(x)))
-  ).getTime();
+const getMaxDate = (data: Point[]) => {
+  return Math.max(...data.map(({ x }: { x: number }) => x));
 };
 
-const getMaxValue = (data: ChartRow[]) => {
+const getMaxValue = (data: Point[]) => {
   return Math.max(...data.map(({ y }: { y: number }) => y));
 };
 
 export const getMinMaxValues = (
   burnData: {
-    cumulative: ChartRow[];
-    daily: ChartRow[];
+    cumulative: Point[];
+    daily: Point[];
   },
   distributionData: {
-    cumulative: ChartRow[];
-    daily: ChartRow[];
+    cumulative: Point[];
+    daily: Point[];
   }
 ) => {
   return {
@@ -56,9 +54,4 @@ export type MinMaxValues = {
   minDate: number;
   maxDate: number;
   maxValue: number;
-};
-
-export type ChartRow = {
-  x: string;
-  y: number;
 };

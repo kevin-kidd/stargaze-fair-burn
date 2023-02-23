@@ -1,9 +1,8 @@
-import logo from "../../public/logo.svg";
+import logo from "../../public/assets/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { FaDiscord, FaTelegram, FaTwitter } from "react-icons/fa";
-import stargazeIcon from "../../public/stargaze-icon.svg";
-import { usePrice } from "../hooks/usePrice";
+import stargazeIcon from "../../public/assets/stargaze-icon.svg";
 import classNames from "classnames";
 import { FiMenu } from "react-icons/fi";
 import { useState } from "react";
@@ -38,8 +37,13 @@ const socials = [
   },
 ];
 
-export const Header = () => {
-  const { data, isLoading } = usePrice();
+export const Header = ({
+  priceData,
+  isLoading,
+}: {
+  priceData: { price: number; change: number } | undefined;
+  isLoading: boolean;
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="fixed top-0 z-30 w-full border border-b border-white/20 bg-black">
@@ -65,8 +69,8 @@ export const Header = () => {
           >
             <Image src={stargazeIcon} alt="$STARS" className="h-5 w-5" />
             <span className="text-xs md:text-sm">
-              {data?.price
-                ? `$${Math.round(data?.price * 1000) / 1000}`
+              {priceData?.price
+                ? `$${Math.round(priceData?.price * 1000) / 1000}`
                 : isLoading
                 ? "..."
                 : "$0"}
@@ -74,15 +78,16 @@ export const Header = () => {
             <span
               className={classNames(
                 "text-xs",
-                data?.change &&
-                  (data?.change > 0
+                priceData?.change &&
+                  (priceData?.change > 0
                     ? "text-green-500"
-                    : data?.change === 0
+                    : priceData?.change === 0
                     ? "text-gray-400"
                     : "text-red-500")
               )}
             >
-              {data?.change && `(${Math.round(data?.change * 100) / 100}%)`}
+              {priceData?.change &&
+                `(${Math.round(priceData?.change * 100) / 100}%)`}
             </span>
           </Link>
           <button

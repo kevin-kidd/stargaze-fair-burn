@@ -34,10 +34,10 @@ export const ChartCard: FunctionComponent<{
         />
       )}
       <div className="flex w-full justify-between px-5">
-        <span className="whitespace-nowrap text-sm text-gray-400 lg:text-base">
+        <span className="whitespace-nowrap text-sm text-gray-400 sm:text-base lg:text-lg">
           {title}
         </span>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <div className="flex whitespace-nowrap text-xs text-gray-500 lg:text-sm">
             {!isLoading && updatedAtTime && (
               <div className="flex gap-1">

@@ -27,7 +27,7 @@ const getFairBurnHistory = async () => {
   };
 };
 
-const chart = async (req: NextApiRequest, res: NextApiResponse) => {
+const stats = async (req: NextApiRequest, res: NextApiResponse) => {
   const { starsBurned, distributedToStakers } = await getFairBurnHistory();
   if (!starsBurned || !distributedToStakers) {
     return res.status(500).json({ error: "Something went wrong" });
@@ -131,4 +131,4 @@ const chart = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 };
 
-export default chart;
+export default stats;

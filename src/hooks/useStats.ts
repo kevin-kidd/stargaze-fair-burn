@@ -18,15 +18,13 @@ const getStats = async () => {
 };
 
 export const useStats = (
-  setIsAnimationActive: Dispatch<SetStateAction<boolean>>
+  setIsAnimationActive: Dispatch<SetStateAction<boolean>>,
+  setTotalBurned: Dispatch<SetStateAction<string>>
 ) => {
   const [history, setHistory] = useState<HistoricalData>();
-  const [previousData, setPreviousData] = useState<{
-    history: HistoricalData;
-    stats: {
-      distributed: Stat[];
-      burned: Stat[];
-    };
+  const [previousStats, setPreviousStats] = useState<{
+    distributed: Stat[];
+    burned: Stat[];
   }>();
   const { data, isLoading, isError, refetch, isRefetching, dataUpdatedAt } =
     useQuery("stats", getStats, {
@@ -41,14 +39,19 @@ export const useStats = (
       setHistory(data.history);
     }
     if (data) {
-      if (!previousData) {
-        setPreviousData(data);
-      } else if (JSON.stringify(previousData) !== JSON.stringify(data)) {
+      if (!previousStats) {
+        setPreviousStats(data.stats);
+      } else if (JSON.stringify(previousStats) !== JSON.stringify(data.stats)) {
         setIsAnimationActive(true);
         setTimeout(() => {
           setIsAnimationActive(false);
         }, 4000);
-        setPreviousData(data);
+        setPreviousStats(data.stats);
+      }
+      if (data.stats.burned[0]?.value !== undefined) {
+        setTotalBurned(
+          Math.round(data.stats.burned[0]?.value).toLocaleString()
+        );
       }
     }
   }, [data]);

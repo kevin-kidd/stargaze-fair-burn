@@ -2,21 +2,32 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Stats } from "../components/Stats";
 import { Header } from "../components/Header";
-import gradient from "../../public/gradient.webp";
+import gradient from "../../public/assets/gradient.webp";
 import Image from "next/image";
 import { Hero } from "../components/Hero";
 import { useState } from "react";
 import Link from "next/link";
+import { usePrice } from "../hooks/usePrice";
 
 const Home: NextPage = () => {
   const [isAnimationActive, setIsAnimationActive] = useState<boolean>(false);
+  const [totalBurned, setTotalBurned] = useState<string>("");
+  const { data: priceData, isLoading } = usePrice();
   return (
     <>
       <Head>
-        <title>Stargaze Fair Burn</title>
+        <title>
+          {totalBurned.length > 0 && totalBurned + " | "}
+          {priceData?.price !== undefined &&
+            `$${Math.round(priceData?.price * 1000) / 1000} | `}
+          Stargaze Fair Burn
+        </title>
         <meta
           name="description"
-          content="Statistics related to the Stargaze Fair Burn."
+          content={`Find all relevant statistics for the Stargaze Fair Burn mechanism. ${
+            totalBurned.length > 0 &&
+            `Over ${totalBurned} $STARS have been burned so far.`
+          }`}
         />
         <link rel="icon" href="/favicon.ico" />
         <link
@@ -42,14 +53,17 @@ const Home: NextPage = () => {
         <meta name="theme-color" content="#000000" />
       </Head>
       <main className="min-h-screen bg-black">
-        <Header />
-        <div className="container relative mx-auto flex w-full flex-col items-center justify-center overflow-y-hidden py-16">
+        <Header priceData={priceData} isLoading={isLoading} />
+        <div className="container relative mx-auto flex w-full flex-col items-center justify-center overflow-y-hidden pt-16">
           <Hero isAnimationActive={isAnimationActive} />
           <div className="circle absolute top-0 h-auto w-full md:-top-40 md:w-[80%]">
             <Image src={gradient} alt="" priority className="h-full w-full" />
           </div>
-          <Stats setIsAnimationActive={setIsAnimationActive} />
-          <span className="relative z-10 text-white pt-10">
+          <Stats
+            setIsAnimationActive={setIsAnimationActive}
+            setTotalBurned={setTotalBurned}
+          />
+          <span className="relative z-10 py-10 text-white">
             Made with 💜 by{" "}
             <Link
               href="https://kevin.stars.page/"

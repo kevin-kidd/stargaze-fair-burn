@@ -7,15 +7,17 @@ import { StatCard } from "./StatCard";
 
 export const Stats = ({
   setIsAnimationActive,
+  setTotalBurned,
 }: {
   setIsAnimationActive: Dispatch<SetStateAction<boolean>>;
+  setTotalBurned: Dispatch<SetStateAction<string>>;
 }) => {
   const { data, isLoading, isError, refetch, isRefetching, dataUpdatedAt } =
-    useStats(setIsAnimationActive);
+    useStats(setIsAnimationActive, setTotalBurned);
   const { burnedCanvasRef, distributedCanvasRef } = useChart(data?.history);
   const updatedAtTime = useTimer(dataUpdatedAt);
   return (
-    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6 md:max-w-5xl 2xl:max-w-6xl">
+    <section className="container relative z-10 mx-auto flex w-full flex-col gap-4 px-6 md:max-w-6xl 2xl:max-w-6xl">
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         <ChartCard
           updatedAtTime={updatedAtTime}
