@@ -74,7 +74,7 @@ export const StatCard: FunctionComponent<{
           <span className="text-gray-500">STARS</span>
         </div>
       </div>
-      <div className="flex h-full flex-col items-end justify-between whitespace-nowrap text-xs text-gray-500 sm:text-sm xl:text-base">
+      <div className="flex h-full flex-col items-end justify-between whitespace-nowrap text-xs text-gray-500 lg:text-sm">
         <span>
           {!isLoading && updatedAtTime && (
             <div className="flex items-center gap-1">

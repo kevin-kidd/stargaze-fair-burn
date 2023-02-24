@@ -38,11 +38,11 @@ export const ChartCard: FunctionComponent<{
           {title}
         </span>
         <div className="flex items-center gap-2">
-          <div className="flex whitespace-nowrap text-xs text-gray-500 sm:text-sm xl:text-base">
+          <div className="flex whitespace-nowrap text-xs text-gray-500 lg:text-sm">
             {!isLoading && updatedAtTime && (
               <div className="flex items-center gap-1">
                 <span className="hidden lg:flex">Updated</span>
-                <BiTimeFive className="h-4 w-4 lg:hidden" />
+                <BiTimeFive className="h-3 w-3 md:h-4 md:w-4 lg:hidden" />
                 <span className="font-semibold text-gray-400">
                   {updatedAtTime}
                 </span>{" "}
@@ -53,7 +53,7 @@ export const ChartCard: FunctionComponent<{
           <button onClick={refetch} disabled={isRefetching}>
             <TbRefresh
               className={classNames(
-                "h-5 w-5 text-white xl:h-6 xl:w-6",
+                "h-4 w-4 text-white lg:h-5 xl:w-5",
                 isRefetching && "animate-spin"
               )}
             />
